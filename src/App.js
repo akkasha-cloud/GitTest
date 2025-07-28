@@ -25,7 +25,6 @@ const CHAIN_PARAMS = {
   blockExplorerUrls: null
 }
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
