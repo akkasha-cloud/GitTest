@@ -14,15 +14,15 @@ const CHAIN_ID = "304"
 const fileTypes = ['Photo', 'Text', 'Audio', 'Video', 'PDF'] //enums are cast as numbers in solidity, so I get the index of the item in the array
 
 const CHAIN_PARAMS = {
-  chainId: '0x'+parseInt(CHAIN_ID).toString(16),
-  chainName: 'C5V Network',
+  chainId: '0x'+(parseInt(CHAIN_ID) + 1).toString(16),
+  chainName: 'C5V Network Extended',
   nativeCurrency: {
-    name: 'C5V',
-    symbol: 'C5V',
+    name: 'C5V Coin',
+    symbol: 'C5VC',
     decimals: 18
   },
-  rpcUrls:['https://rpc.c5v.network'],
-  blockExplorerUrls: null
+  rpcUrls:['https://rpc.c5v.network', 'https://additional.rpc.c5v.network'],
+  blockExplorerUrls: ['https://explorer.c5v.network']
 }
 
 class App extends React.Component {
