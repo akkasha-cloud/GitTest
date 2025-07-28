@@ -139,16 +139,22 @@ class RecordForm extends React.Component {
  * Captures the photo from the {ref = {webcamRef}} component, transforms it from Base64 to the Blob and uploads it to the IPFS
  */
   capturePhoto = () => {
-    this.setState({ actionState: '' })
-    const photo_b64 = this.webcamRef.current.getScreenshot()
-    if (photo_b64) {
-      var block = photo_b64.split(";");
-      const contentType = block[0].split(":")[1];
-      const realData = block[1].split(',')[1];
-      const file_blob = this.b64toBlob(realData, contentType);
-      const file = new File([file_blob], "photo.jpeg", { type: contentType })
-      this.setState({ actionState: 'photoCaptured' })
-      this.uploadToIPFS(file)
+    this.setState({ actionState: 'ready' });
+    const base64Data = this.webcamRef.current.getScreenshot();
+    if (base64Data) {
+      const [meta, data] = base64Data.split(',');
+      const mimeType = meta.split(':')[1].split(';')[0];
+      const binary = atob(data);
+      const arrayBuffer = new ArrayBuffer(binary.length);
+      const uint8Array = new Uint8Array(arrayBuffer);
+      for (let i = 0; i < binary.length; i++) {
+        uint8Array[i] = binary.charCodeAt(i);
+      }
+      const blob = new Blob([arrayBuffer], { type: mimeType });
+      const filename = `snapshot_${Date.now()}.png`;
+      const file = new File([blob], filename, { type: mimeType });
+      this.setState({ actionState: 'captured' });
+      this.uploadToIPFS(file);
     }
   }
 
